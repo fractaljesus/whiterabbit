@@ -1,0 +1,52 @@
+name: AI Access Bot
+
+on:
+  push:
+    paths:
+      - bot_online.py
+  schedule:
+    - cron: '*/5 * * * *'  # запускать каждые 5 минут (по желанию)
+
+permissions:
+  contents: write
+
+jobs:
+  run_bot:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run bot
+        run: python bot_online.py
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+
+      - name: Save & commit data
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add data/user_contexts.txt data/user_psyhos.txt || true
+          
+          # Проверка на наличие изменений
+          git diff --cached --quiet && echo "No changes to commit" || git commit -m "Обновление данных бота"
+
+          # Обновляем main без ребейза — используем стратегию theirs
+          git fetch origin
+          git merge -X theirs origin/main || true
+          
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
