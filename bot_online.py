@@ -148,7 +148,7 @@ def has_glyphs(text):
 @bot.message_handler(commands=['f', 'finish'])
 def handle_finish(message):
     try:
-        bot.delete_message(message.chat.id, "🏁")
+        bot.delete_message(message.chat.id, "🐾")
         bot.stop_polling()
         sys.exit(0)
     except Exception:
@@ -286,7 +286,7 @@ def echo_all(message):
 
     if user_first_message.get(username, True):
         try:
-            temp_msg = bot.send_message(message.chat.id, "⬇️", parse_mode='HTML')    # 🔄
+            temp_msg = bot.send_message(message.chat.id, "🐰", parse_mode='HTML')    # 🔄
             time.sleep(2)
             bot.delete_message(message.chat.id, temp_msg.message_id)
             user_first_message[username] = False
