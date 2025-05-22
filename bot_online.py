@@ -287,7 +287,7 @@ def echo_all(message):
     if user_first_message.get(username, True):
         try:
             temp_msg = bot.send_message(message.chat.id, "🐰", parse_mode='HTML')    # 🔄
-            time.sleep(2)
+            time.sleep(3)
             bot.delete_message(message.chat.id, temp_msg.message_id)
             user_first_message[username] = False
         except Exception:
