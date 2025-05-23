@@ -228,9 +228,13 @@ def echo_all(message):
     globalMessageObject = message
 
     # 🛑 Игнорируем любые сообщения от каналов
-    if message.chat.type == 'channel':
-        return
-    if message.sender_chat is not None:
+    # if message.chat.type == 'channel':
+    #     return
+    # if message.sender_chat is not None:
+    #     return
+
+    # 🛑 Игнорировать сообщения от имени канала или из самого канала
+    if message.chat.type == 'channel' or message.sender_chat:
         return
 
     username = str(message.from_user.id)
